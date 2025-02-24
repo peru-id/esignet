@@ -13,7 +13,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import ErrorBanner from "../common/ErrorBanner";
 import redirectOnError from "../helpers/redirectOnError";
 import langConfigService from "../services/langConfigService";
-
+import { Buffer } from "buffer";
 let fieldsState = {};
 const langConfig = await langConfigService.getEnLocaleConfiguration();
 
@@ -113,7 +113,8 @@ export default function Form({
           challengeManipulate[field.id] = loginState["_form_"+field.id]
         }
       });
-      let challenge = btoa(JSON.stringify(challengeManipulate));
+      // let challenge = btoa(JSON.stringify(challengeManipulate));
+      let challenge =Buffer.from(JSON.stringify(challengeManipulate),'utf8').toString('base64');
 
       let challengeList = [
         {
