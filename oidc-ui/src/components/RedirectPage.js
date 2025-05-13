@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CodeVerify from "./CodeVerify";
 import localStorageService from "../services/local-storageService";
+import LoadingIndicator from "../common/LoadingIndicator";
 
 const RedirectPage = () => {
   const location = useLocation();
@@ -43,9 +44,9 @@ const RedirectPage = () => {
       <div className="redirect-content">
         {!isReady ? (
           <div className="loading-indicator">
-            <div className="spinner"></div>
-            <h2>Redirecting...</h2>
-            <p>Please wait while we take you to your destination</p>
+              <LoadingIndicator
+              size="medium"
+            message="redirecting_msg" />
           </div>
         ) : (
           <CodeVerify state={stateParam} code={codeParam} />
