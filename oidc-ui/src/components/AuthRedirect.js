@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from "react";
 
-function AuthRedirect({ oidcService }) {
+function AuthRedirect({ oidcService ,state}) {
   
     useEffect(() => {
-      const oAuthDetailResponse = oidcService.getOAuthDetails().configs;
-      const oidcParams = oAuthDetailResponse?.["openid-relying-party-url"];
+      const oAuthDetails = oidcService.getOAuthDetails().configs;
+      const authUrl = new URL(oAuthDetails.authorization_params);
       
-      const acrValues = oidcParams.acr_values.join(' ');
-      
-      const authUrl = new URL(oidcParams.url);
       const params = new URLSearchParams({
-        client_id: oidcParams.client_id,
-        redirect_uri: oidcParams.redirect_uri,
+        client_id: oAuthDetails.client_id,
+        redirect_uri: oAuthDetails.redirect_uri,
         response_type: 'code',
-        scope: oidcParams.scope,
-        nonce: oidcParams.nonce,
-        state: oidcService.state,
-        acr_values: acrValues,
-        claims_locales: oidcParams.claims_locales,
-        display: oidcParams.display,
-        ui_locales: oidcParams.ui_locales
+        scope: oAuthDetails.scope,
+        state: state,
+        acr_values: oAuthDetails.acr_values?.join(' ') || '',
+        claims_locales: oAuthDetails?.claims_locales,
+        display: oAuthDetails.display,
+        ui_locales: oAuthDetails?.ui_locales
       });
       
       authUrl.search = params.toString();
@@ -28,7 +24,9 @@ function AuthRedirect({ oidcService }) {
       window.location.href = authUrl.href;
     }, [oidcService]);
   
-    return <div>Redirecting to authentication provider...</div>;
+    return <>
+      
+    </>
   }
 
   export default AuthRedirect

@@ -548,7 +548,7 @@ input[type="number"] {
 
 }
 
-.redirect-container {
+/* .redirect-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -587,6 +587,6 @@ input[type="number"] {
   to {
     transform: rotate(360deg);
   }
-}
+} */
 
 

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { Buffer } from "buffer";
+import LoadingIndicator from "../common/LoadingIndicator";
 import {
   buttonTypes,
   challengeFormats,
@@ -59,8 +60,6 @@ const CodeVerify = ({ state, code }) => {
         },
       ];
 
-      // In real code, idvid should come from user input or auth context
-      const idvid = "439674501730"; // Consider making this dynamic
 
       const authenticateResponse = await post_AuthenticateUser(
         transactionId,
@@ -114,8 +113,10 @@ const CodeVerify = ({ state, code }) => {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
-    <div className="code-verify-container">
-      {status.state === states.LOADING &&  <p>{code.authenticating_msg}</p>}
+    <div>
+      {status.state === states.LOADING &&  (
+                  <LoadingIndicator size="medium" message={code.authenticating_msg} />
+                )}
 
       {errorBanner?.show && (
         <div className="error-message">{t2(errorBanner.errorCode)}</div>

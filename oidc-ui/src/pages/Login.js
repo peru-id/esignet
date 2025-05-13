@@ -170,7 +170,7 @@ export default function LoginPage({ i18nKeyPrefix = "header" }) {
   const oidcServiceii= new openIDConnectService(parsedAuthData, nonce, state);
   if (authCode?.type === "CODE") {
     localStorageService.addParam(state, base64ValueAuth);
-    return <AuthRedirect oidcService={oidcServiceii} />;
+    return <AuthRedirect oidcService={oidcServiceii} state ={state}/>;
   }
   
 
