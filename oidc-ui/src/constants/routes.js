@@ -30,3 +30,5 @@ export const LOGIN = "/login";
 export const AUTHORIZE = "/authorize";
 export const CONSENT = "/consent";
 export const ESIGNET_DETAIL = "/";
+export const REDIRECT_URL ="/redirect"
+

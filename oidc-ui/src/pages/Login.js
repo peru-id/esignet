@@ -18,6 +18,8 @@ import openIDConnectService from "../services/openIDConnectService";
 import DefaultError from "../components/DefaultError";
 import Password from "../components/Password";
 import Form from "../components/Form";
+import AuthRedirect from "../components/AuthRedirect";
+import { generateRandomString } from '../services/configService';
 
 function InitiateL1Biometrics(openIDConnectService, backButtonDiv) {
   return React.createElement(L1Biometrics, {
@@ -138,10 +140,10 @@ export default function LoginPage({ i18nKeyPrefix = "header" }) {
   const [authFactorType, setAuthFactorType] = useState(null);
   const [searchParams] = useSearchParams();
   const location = useLocation();
-
+  
   var decodeOAuth = Buffer.from(location.hash ?? "", "base64")?.toString();
   var nonce = searchParams.get("nonce");
-  var state = searchParams.get("state");
+  var state = generateRandomString(8)
 
   useEffect(() => {
     if (!decodeOAuth) {
@@ -157,6 +159,20 @@ export default function LoginPage({ i18nKeyPrefix = "header" }) {
       setSubHeader();
     }
   }, [authFactorType, i18n.language]);
+
+  const base64ValueAuth = location.hash.substring(1);
+  const parsedAuthData = JSON.parse(decodeOAuth);
+  
+  const authFactors = Array.isArray(parsedAuthData?.authFactors) ? parsedAuthData.authFactors : [];
+
+  const authCode = authFactors.flat().find(f => f?.type === 'CODE');
+
+  const oidcServiceii= new openIDConnectService(parsedAuthData, nonce, state);
+  if (authCode?.type === "CODE") {
+    localStorageService.addParam(state, base64ValueAuth);
+    return <AuthRedirect oidcService={oidcServiceii} state ={state}/>;
+  }
+  
 
   const setSubHeader = () => {
     if (authFactorType === "OTP") {

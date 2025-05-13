@@ -7,6 +7,7 @@ import {
   EsignetDetailsPage,
   SomethingWrongPage,
   PageNotFoundPage,
+  
 } from "../pages";
 import { setupResponseInterceptor } from "../services/api.service";
 import { useTranslation } from "react-i18next";
@@ -17,8 +18,10 @@ import {
   PAGE_NOT_FOUND,
   SOMETHING_WENT_WRONG,
   ESIGNET_DETAIL,
+  REDIRECT_URL
 } from "../constants/routes";
 import configService from "../services/configService";
+import RedirectPage from "../components/RedirectPage";
 
 const config = await configService();
 
@@ -85,6 +88,7 @@ export const AppRouter = () => {
     { route: SOMETHING_WENT_WRONG, component: <SomethingWrongPage /> },
     { route: PAGE_NOT_FOUND, component: <PageNotFoundPage /> },
     { route: "*", component: <PageNotFoundPage /> },
+    { route: REDIRECT_URL, component: <RedirectPage /> }
   ];
 
   return (
