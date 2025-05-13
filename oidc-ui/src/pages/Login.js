@@ -164,9 +164,10 @@ export default function LoginPage({ i18nKeyPrefix = "header" }) {
   const parsedAuthData = JSON.parse(decodeOAuth);
   
   const authFactors = Array.isArray(parsedAuthData?.authFactors) ? parsedAuthData.authFactors : [];
+   console.log("authFactors",authFactors);
 
   const authCode = authFactors.flat().find(f => f?.type === 'CODE');
-
+  console.log("authCode",authCode);
   const oidcServiceii= new openIDConnectService(parsedAuthData, nonce, state);
   if (authCode?.type === "CODE") {
     localStorageService.addParam(state, base64ValueAuth);
